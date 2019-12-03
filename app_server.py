@@ -12,6 +12,10 @@ users = [{"id":1, "User":"EnchantedSleepy", "Email":"sleepy@gmail.com", "Edits":
 ]
 newID = 5
 
+@app.route('/')
+def index():
+    return "Hello, World. Why aren't you working?"
+
 #Code to return all users
 @app.route('/users')
 def getAll():
