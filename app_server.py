@@ -1,5 +1,8 @@
 from flask import Flask, jsonify, abort, request
 
+from userdao1 import userDAO
+
+
 #from flask_cors import CORS #don't need this atm
 
 app = Flask(__name__, static_url_path='', static_folder='.')
@@ -19,6 +22,7 @@ def index():
 #Code to return all users
 @app.route('/users')
 def getAll():
+    result = userDAO.getAll()
     return jsonify(users)
 #CHECK IT WORKS--> curl "http://127.0.0.1:5000/users"
 
@@ -44,17 +48,21 @@ def create():
     if not 'Email' in new_user:
         abort(400)
     user = {
-        "Edits": new_user['Edits'],
+        #Note for new editors, the number of edits is automatically zero
+        #and they have editor permissions only
+        "Edits": 0,
         "Email": new_user['Email'],
-        "Permission": new_user['Permission'],
+        "Permission": 'Editor',
         "User": new_user['User'],
         "id": newID,
     }
     newID = newID +1
     users.append(user)
     return jsonify({'User': user}), 201
-#curl -i -H "Content-Type:application.json" -X POST -d 
-# "{\"Email\":\"skippy@hotmail.com\",\"Permission\":\"Editor\",\"User\":\"skippy\"}" http://127.0.0.1:5000/users
+#curl -i -H "Content-Type:application.json" -X POST -d "{\"Email\":\"skippy@hotmail.com\",\"Permission\":\"Advanced Editor\",\"User\":\"skippy\"}" http://127.0.0.1:5000/users
+#OR 
+#curl -i -H "Content-Type:application.json" -X POST -d "{\"Email\":\"skippy@hotmail.com\",\"User\":\"skippy\"}" http://127.0.0.1:5000/users
+
 
 
 @app.route('/users/<int:id>', methods = ['PUT'])
@@ -79,8 +87,7 @@ def update(id):
     if 'Permission' in update_user:
         foundUser['Permission']= update_user['Permission']
     return jsonify(foundUser)
-#curl -i -H "Content-Type:application/json" -X PUT -d 
-# "{\"Edits\":10,\"Email\":\"skippy@hotmail.com\",\"Permission\":\"Editor\",\"User\":\"skippy\"}" http://127.0.0.1:5000/users/5
+#curl -i -H "Content-Type:application/json" -X PUT -d "{\"Edits\":10,\"Email\":\"skippy@hotmail.com\",\"Permission\":\"Editor\",\"User\":\"skippy\"}" http://127.0.0.1:5000/users/5
 # OR
 #curl -i -H "Content-Type:application/json" -X PUT -d "{\"Edits\":78}" http://127.0.0.1:5000/users/4
 
