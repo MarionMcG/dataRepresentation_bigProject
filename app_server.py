@@ -44,7 +44,7 @@ def create():
     if not 'Email' in new_user:
         abort(400)
     user = {
-        "Edits": 0,
+        "Edits": new_user['Edits'],
         "Email": new_user['Email'],
         "Permission": new_user['Permission'],
         "User": new_user['User'],
@@ -67,7 +67,7 @@ def update(id):
         abort(400)
     update_user = request.json
     perms = ['Editor', 'Advanced Editor', 'Gardener']
-    if 'Edits' in update_user and type(update_user['price']) is not int:
+    if 'Edits' in update_user and type(update_user['Edits']) is not int:
         abort(400)
     if 'User'in update_user:
         foundUser['User']= update_user['User']
