@@ -4,6 +4,10 @@ app = Flask(__name__, static_url_path='', static_folder='.')
 
 from userdao1 import UserDAO
 
+##TO DO
+### Dictionary
+### Update and Delete
+
 users = [{"id":1, "User":"EnchantedSleepy", "Email":"sleepy@gmail.com", "Edits":1526, "Permission":"Advanced Editor"}, 
         {"id":2, "User":"MrPotatoHead", "Email":"mph_rocks@gmail.com", "Edits":526, "Permission":"Editor"},
         {"id":3, "User":"AgonyAunt", "Email":"aunty@gmail.com", "Edits":26, "Permission":"Editor"},
@@ -11,9 +15,9 @@ users = [{"id":1, "User":"EnchantedSleepy", "Email":"sleepy@gmail.com", "Edits":
 ]
 newID = 5
 
-@app.route('/')
-def index():
-    return "Hello, World. Why aren't you working?"
+#@app.route('/')
+#def index():
+#    return "Hello, World. Why aren't you working?"
 
 #Code to return all users
 @app.route('/users')
@@ -25,10 +29,12 @@ def getAll():
 #Code to find users by id
 @app.route('/users/<int:id>')
 def findById(id):
-    foundUser = list(filter(lambda x : x['id'] == id, users))
-    if len(foundUser)==0:
-        return (jsonify({}), 204)
-    return jsonify(foundUser[0])
+    result = UserDAO.findByID(id)
+    return jsonify(result)
+    #foundUser = list(filter(lambda x : x['id'] == id, users))
+    #if len(foundUser)==0:
+        #return (jsonify({}), 204)
+    #return jsonify(foundUser[0])
 ##curl "http://127.0.0.1:5000/users/2"
 
 #Code to add a new user - must include user name and email
@@ -91,11 +97,12 @@ def update(id):
 def delete(id):
     foundUsers = list(filter(lambda x : x['id'] == id, users))
     if len(foundUsers)==0:
+        print('No user with that id')
         abort(404)
-    users.remove(foundUsers[0])
+    UserDAO.delete(id)
+    #users.remove(foundUsers[0])
     return jsonify({"done":True})
 #curl -X DELETE "http://127.0.0.1:5000/users/1"
-
 
 if __name__ == '__main__' :
     app.run(debug= True)
