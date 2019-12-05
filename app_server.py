@@ -1,12 +1,8 @@
 from flask import Flask, jsonify, abort, request
 
-from userdao1 import userDAO
-
-
-#from flask_cors import CORS #don't need this atm
-
 app = Flask(__name__, static_url_path='', static_folder='.')
-#CORS(app)
+
+from userdao1 import UserDAO
 
 users = [{"id":1, "User":"EnchantedSleepy", "Email":"sleepy@gmail.com", "Edits":1526, "Permission":"Advanced Editor"}, 
         {"id":2, "User":"MrPotatoHead", "Email":"mph_rocks@gmail.com", "Edits":526, "Permission":"Editor"},
@@ -22,8 +18,8 @@ def index():
 #Code to return all users
 @app.route('/users')
 def getAll():
-    result = userDAO.getAll()
-    return jsonify(users)
+    result = UserDAO.getAll()
+    return jsonify(result)
 #CHECK IT WORKS--> curl "http://127.0.0.1:5000/users"
 
 #Code to find users by id
