@@ -20,7 +20,7 @@ def getAll():
 def findById(id):
     foundUser = UserDAO.findByID(id)
     if foundUser == None:
-        return (jsonify({}), 204)
+        abort(404)
     else:
         return jsonify(foundUser)
 
@@ -90,7 +90,7 @@ def delete(id):
 
     foundUser = UserDAO.findByID(id)
     if foundUser == None:
-        return (jsonify({}), 204)
+        abort(404)
     else:
         UserDAO.delete(id)
         return jsonify({"done":True})
