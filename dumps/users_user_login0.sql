@@ -16,30 +16,28 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `user_info`
+-- Table structure for table `user_login`
 --
 
-DROP TABLE IF EXISTS `user_info`;
+DROP TABLE IF EXISTS `user_login`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
-CREATE TABLE `user_info` (
+CREATE TABLE `user_login` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
-  `user` varchar(20) NOT NULL,
+  `password` varchar(20) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `edits` int(10) DEFAULT NULL,
-  `permission` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user_info`
+-- Dumping data for table `user_login`
 --
 
-LOCK TABLES `user_info` WRITE;
-/*!40000 ALTER TABLE `user_info` DISABLE KEYS */;
-INSERT INTO `user_info` VALUES (1,'EnchantedSleepy','sleepy@gmail.com',1526,'Advanced Editor'),(2,'MrPotatoHead','mph_rocks@gmail.com',526,'Editor'),(3,'AgonyAunt','aunty@gmail.com',26,'Editor'),(4,'james_','james_notjame@hotmail.com',5126,'Gardener');
-/*!40000 ALTER TABLE `user_info` ENABLE KEYS */;
+LOCK TABLES `user_login` WRITE;
+/*!40000 ALTER TABLE `user_login` DISABLE KEYS */;
+INSERT INTO `user_login` VALUES (1,'ESleepz','sleepy@gmail.com'),(2,'MPHEDita','mph_rocks@gmail.com'),(3,'AgAunt31','aunty@gmail.com'),(4,'NOTjames','james_notjame@hotmail.com');
+/*!40000 ALTER TABLE `user_login` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -51,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-07 12:38:57
+-- Dump completed on 2019-12-07 12:38:58

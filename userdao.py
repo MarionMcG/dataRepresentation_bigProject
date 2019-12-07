@@ -9,11 +9,11 @@ class userDAO:
                             password="root", 
                             db = "users", 
                             cursorclass = pymysql.cursors.DictCursor)
-
-   
+    #Creating a new user adds data to both tables                        
+      
     def create(self, values):
         cursor = self.db.cursor()
-        sql="insert into  user_info  ( user ,  email ,  edits ,  permission ) values (%s,%s, 0,  Editor )"
+        sql="insert into  user_info  ( user ,  email ,  edits ,  permission ) values (%s,%s, 0,  'Editor' )"
         cursor.execute(sql, values)
         self.db.commit()
         return cursor.lastrowid
@@ -40,7 +40,7 @@ class userDAO:
 
     def update(self, values):
         cursor = self.db.cursor()
-        sql="update  user_info  set  user = %s,  email =%s,  edits =%s,  permission =%s where  id  = %s"
+        sql="update  user_info  set  user = %s,  email =%s,  edits =%s,  permission =%s where  id  = %s" 
         cursor.execute(sql, values)
         self.db.commit()
     

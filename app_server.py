@@ -4,13 +4,6 @@ app = Flask(__name__, static_url_path='', static_folder='.')
 
 from userdao import UserDAO
 
-#users = [{"id":1, "User":"EnchantedSleepy", "Email":"sleepy@gmail.com", "Edits":1526, "Permission":"Advanced Editor"}, 
- #       {"id":2, "User":"MrPotatoHead", "Email":"mph_rocks@gmail.com", "Edits":526, "Permission":"Editor"},
- #       {"id":3, "User":"AgonyAunt", "Email":"aunty@gmail.com", "Edits":26, "Permission":"Editor"},
- #       {"id":4, "User":"james_", "Email":"james_notjame@hotmail.com", "Edits":5126, "Permission":"Gardener"}
-#]
-#newID = 5
-
 #@app.route('/')
 #def index():
 #    return "Hello, World. Why aren't you working?"
@@ -30,74 +23,69 @@ def findById(id):
         return (jsonify({}), 204)
     else:
         return jsonify(foundUser)
-    #foundUser = list(filter(lambda x : x['id'] == id, users))
-    #if len(foundUser)==0:
-        #return (jsonify({}), 204)
-    #return jsonify(foundUser[0])
+
 ##curl "http://127.0.0.1:5000/users/2"
 
 #Code to add a new user - must include user name and email
+# Use dict object would be better - possible extension of project
 @app.route('/users', methods = ['POST'])
 def create():
-    global newID
+    #global newID
     try:
         new_user = request.get_json(force=True)
     except:
         abort(400)
-    if not 'User' in new_user:
+    if not 'user' in new_user:
         abort(400)
-    if not 'Email' in new_user:
+    if not 'email' in new_user:
         abort(400)
     user = {
-        #Note for new editors, the number of edits is automatically zero
-        #and they have editor permissions only
-        "Edits": 0,
-        "Email": new_user['Email'],
-        "Permission": 'Editor',
-        "User": new_user['User'],
-        "id": newID,
+        "email": new_user['email'],
+        "user": new_user['user'],
+        # going to add new users to user_info and user_login at same time
+        #"password": new_user['password']
     }
-    newID = newID +1
-    users.append(user)
-    return jsonify({'User': user}), 201
-#curl -i -H "Content-Type:application.json" -X POST -d "{\"Email\":\"skippy@hotmail.com\",\"Permission\":\"Advanced Editor\",\"User\":\"skippy\"}" http://127.0.0.1:5000/users
+    values = (user['email'], user['user'])
+    newId = UserDAO.create(values)
+    user['id'] = newId
+    return jsonify(user)
+#curl -i -H "Content-Type:application.json" -X POST -d "{\"email\":\"skippy@hotmail.com\",\"permission\":\"Advanced Editor\",\"user\":\"skippy\"}" http://127.0.0.1:5000/users
 #OR 
-#curl -i -H "Content-Type:application.json" -X POST -d "{\"Email\":\"skippy@hotmail.com\",\"User\":\"skippy\"}" http://127.0.0.1:5000/users
-
-
+#curl -i -H "Content-Type:application.json" -X POST -d "{\"email\":\"skippy@hotmail.com\",\"user\":\"skippy\"}" http://127.0.0.1:5000/users
 
 @app.route('/users/<int:id>', methods = ['PUT'])
 def update(id):
-    foundUsers = list(filter(lambda x : x['id'] == id, users))
-    if len(foundUsers)==0:
+    foundUser = UserDAO.findByID(id)
+    if foundUser==None:
         abort(404)
-    foundUser = foundUsers[0]
     if not request.json:
         abort(400)
+    #Add code to check that email is in correct format (maybe)
     update_user = request.json
+
     perms = ['Editor', 'Advanced Editor', 'Gardener']
-    if 'Edits' in update_user and type(update_user['Edits']) is not int:
+    if 'edits' in update_user and type(update_user['edits']) is not int:
         abort(400)
-    if 'User'in update_user:
-        foundUser['User']= update_user['User']
-    if 'Edits' in update_user:
-        #or we could do , if Edits in update_user
-        foundUser['Edits']= update_user['Edits']
-    if 'Email' in update_user:
-        foundUser['Email']= update_user['Email']
-    if 'Permission' in update_user:
-        foundUser['Permission']= update_user['Permission']
+    if 'user'in update_user:
+        foundUser['user']= update_user['user']
+    if 'edits' in update_user:
+        foundUser['edits']= update_user['edits']
+    if 'email' in update_user:
+        foundUser['email']= update_user['email']
+    if 'permission' in update_user:
+        foundUser['permission']= update_user['permission']
+    foundUser['id'] =id
+    values = (foundUser['user'], foundUser['email'], foundUser['edits'], foundUser['permission'], foundUser['id'] )
+    UserDAO.update(values)
     return jsonify(foundUser)
-#curl -i -H "Content-Type:application/json" -X PUT -d "{\"Edits\":10,\"Email\":\"skippy@hotmail.com\",\"Permission\":\"Editor\",\"User\":\"skippy\"}" http://127.0.0.1:5000/users/5
+#curl -i -H "Content-Type:application/json" -X PUT -d "{\"edits\":10,\"email\":\"skippy@hotmail.com\",\"permission\":\"Editor\",\"user\":\"skippy\"}" http://127.0.0.1:5000/users/5
 # OR
-#curl -i -H "Content-Type:application/json" -X PUT -d "{\"Edits\":78}" http://127.0.0.1:5000/users/4
+#curl -i -H "Content-Type:application/json" -X PUT -d "{\"edits\":78}" http://127.0.0.1:5000/users/4
 
 @app.route('/users/<int:id>', methods = ['DELETE'])
 def delete(id):
-   # foundUsers = list(filter(lambda x : x['id'] == id, users))
-    #if len(foundUsers)==0:
-        #print('No user with that id')
-        #abort(404)
+    #OLD CODE -- ignore
+    #foundUsers = list(filter(lambda x : x['id'] == id, users))
     #users.remove(foundUsers[0])
 
     foundUser = UserDAO.findByID(id)
