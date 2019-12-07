@@ -70,8 +70,8 @@
     }
     function doCreate(){
         var form = document.getElementById('createUpdateForm')
-        var  user = {}
-        user.id= form.querySelector('input[name="id"]').value
+        var user = {}
+        //user.id= form.querySelector('input[name="id"]').value
         user.permission= form.querySelector('select[name="permission"]').value
         user.user = form.querySelector('input[name="user"]').value
         user.email = form.querySelector('input[name="email"]').value
@@ -172,7 +172,7 @@
             "dataType": "JSON",
             "success":function(result){
                 //console.log(result);
-                for (user of result.users){
+                for (user of result){
                     addUserToTable(user);
                 }
                 
