@@ -2,18 +2,14 @@ from flask import Flask, jsonify, abort, request
 
 app = Flask(__name__, static_url_path='', static_folder='.')
 
-from userdao1 import UserDAO
+from userdao import UserDAO
 
-##TO DO
-### Dictionary
-### Update and Delete
-
-users = [{"id":1, "User":"EnchantedSleepy", "Email":"sleepy@gmail.com", "Edits":1526, "Permission":"Advanced Editor"}, 
-        {"id":2, "User":"MrPotatoHead", "Email":"mph_rocks@gmail.com", "Edits":526, "Permission":"Editor"},
-        {"id":3, "User":"AgonyAunt", "Email":"aunty@gmail.com", "Edits":26, "Permission":"Editor"},
-        {"id":4, "User":"james_", "Email":"james_notjame@hotmail.com", "Edits":5126, "Permission":"Gardener"}
-]
-newID = 5
+#users = [{"id":1, "User":"EnchantedSleepy", "Email":"sleepy@gmail.com", "Edits":1526, "Permission":"Advanced Editor"}, 
+ #       {"id":2, "User":"MrPotatoHead", "Email":"mph_rocks@gmail.com", "Edits":526, "Permission":"Editor"},
+ #       {"id":3, "User":"AgonyAunt", "Email":"aunty@gmail.com", "Edits":26, "Permission":"Editor"},
+ #       {"id":4, "User":"james_", "Email":"james_notjame@hotmail.com", "Edits":5126, "Permission":"Gardener"}
+#]
+#newID = 5
 
 #@app.route('/')
 #def index():
@@ -29,8 +25,11 @@ def getAll():
 #Code to find users by id
 @app.route('/users/<int:id>')
 def findById(id):
-    result = UserDAO.findByID(id)
-    return jsonify(result)
+    foundUser = UserDAO.findByID(id)
+    if foundUser == None:
+        return (jsonify({}), 204)
+    else:
+        return jsonify(foundUser)
     #foundUser = list(filter(lambda x : x['id'] == id, users))
     #if len(foundUser)==0:
         #return (jsonify({}), 204)
@@ -95,13 +94,18 @@ def update(id):
 
 @app.route('/users/<int:id>', methods = ['DELETE'])
 def delete(id):
-    foundUsers = list(filter(lambda x : x['id'] == id, users))
-    if len(foundUsers)==0:
-        print('No user with that id')
-        abort(404)
-    UserDAO.delete(id)
+   # foundUsers = list(filter(lambda x : x['id'] == id, users))
+    #if len(foundUsers)==0:
+        #print('No user with that id')
+        #abort(404)
     #users.remove(foundUsers[0])
-    return jsonify({"done":True})
+
+    foundUser = UserDAO.findByID(id)
+    if foundUser == None:
+        return (jsonify({}), 204)
+    else:
+        UserDAO.delete(id)
+        return jsonify({"done":True})
 #curl -X DELETE "http://127.0.0.1:5000/users/1"
 
 if __name__ == '__main__' :
