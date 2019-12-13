@@ -13,10 +13,10 @@
             <table class="table" id="userTable">
                 <tr>
                         <!--<th>ID</th>-->
-                        <th>id</th>
+                        <th>ID</th>
                         <th>User</th>
                         <th>Email</th>
-                        <th>edit</th>
+                        <th>Edits</th>
                         <th>Permissions</th>
                         <th>Update</th>
                         <th>Delete</th>
@@ -37,8 +37,8 @@
                 <!--Id<input type="text" id="updateLabel" name="id"/>--> <br/>
                 User <input type="text" name="user"/> <br/>
                 Email <input type="text" name="email"/> <br/>
-                edit <input type="number" id="updateLabel" name="edit"/> <br/>
-                Permission<select id="updateLabel" name="permission">
+                Edit <input type="number" min ="0" name="edit"/> <br/>
+                Permission<select name="permission">
                         <option value="Editor">Editor</option>
                         <option value="Advanced Editor">Advanced Editor</option>
                         <option value="Gardener">Gardener</option>
@@ -118,7 +118,7 @@
         var cell3 = rowElement.insertCell(2);
         cell3.innerHTML = user.email
         var cell4 = rowElement.insertCell(3);
-        cell4.innerHTML = user.edit
+        cell4.innerHTML =user.edit
         var cell5 = rowElement.insertCell(4);
         cell5.innerHTML = user.permission
         var cell6 = rowElement.insertCell(5);
@@ -173,7 +173,8 @@
         user.user= form.querySelector('input[name="user"]').value
         user.permission= form.querySelector('select[name="permission"]').value
         user.email = form.querySelector('input[name="email"]').value
-        user.edit = parseInt(form.querySelector('input[name="edit"]').value, 10)
+        user.edit = form.querySelector('input[name="edit"]').value
+
         console.log(JSON.stringify(user))
         return user
     }

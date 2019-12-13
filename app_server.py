@@ -4,14 +4,11 @@ app = Flask(__name__, static_url_path='', static_folder='.')
 
 from userdao import UserDAO
 
-#@app.route('/')
-#def index():
-#    return "Hello, World. Why aren't you working?"
-
 #Code to return all users
 @app.route('/users')
 def getAll():
     result = UserDAO.getAll()
+    
     return jsonify(result)
 #CHECK IT WORKS--> curl "http://127.0.0.1:5000/users"
 
@@ -37,15 +34,15 @@ def create():
         new_user = request.get_json(force=True)
     except:
         abort(400)
-    #if not 'user' in new_user:
-        #abort(400)
-    #if not 'email' in new_user:
-        #abort(400)
+    if not 'user' in new_user:
+        abort(400)
+    if not 'email' in new_user:
+        abort(400)
     user = {
         "user": new_user['user'],
         "email": new_user['email']
         
-        # going to add new users to user_info and user_login at same time
+        # If I have time I'm going to add new users to user_info and user_login at same time
         #"password": new_user['password']
     }
     new_user = (user['user'], user['email'],)

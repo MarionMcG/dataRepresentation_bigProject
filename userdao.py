@@ -13,7 +13,7 @@ class userDAO:
       
     def create(self, values):
         cursor = self.db.cursor()
-        sql="insert into  user_info  ( user ,  email ,  edits ,  permission ) values (%s,%s, 0,  'Editor' )"
+        sql="insert into  user_info  ( user ,  email ,  edits ,  permission ) values (%s,%s,0,'Editor')"
         cursor.execute(sql, values)
         self.db.commit()
         return cursor.lastrowid

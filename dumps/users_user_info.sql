@@ -26,7 +26,7 @@ CREATE TABLE `user_info` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
   `user` varchar(20) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `edits` int(10) DEFAULT NULL,
+  `edits` int(10) NOT NULL,
   `permission` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
