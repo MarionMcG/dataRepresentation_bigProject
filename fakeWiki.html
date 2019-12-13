@@ -1,21 +1,23 @@
 <html>
     <head>
-        <title> view Users</title>
+        <title> All Users</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
        
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     </head>
     <body>
-        <h1>users</h1>
+        </br>
+        <h1>Users</h1>
         <div> <button id="showCreateButton" onclick="showCreate()">Create</button></div>
         <div>
             <table class="table" id="userTable">
                 <tr>
                         <!--<th>ID</th>-->
+                        <th>id</th>
                         <th>User</th>
                         <th>Email</th>
                         <th>Edits</th>
-                        <th>Permission</th>
+                        <th>Permissions</th>
                         <th>Update</th>
                         <th>Delete</th>
                 </tr>
@@ -72,10 +74,10 @@
         var form = document.getElementById('createUpdateForm')
         var user = {}
         //user.id= form.querySelector('input[name="id"]').value
-        user.permission= form.querySelector('select[name="permission"]').value
         user.user = form.querySelector('input[name="user"]').value
         user.email = form.querySelector('input[name="email"]').value
         user.edits = form.querySelector('input[name="edits"]').value
+        user.permission= form.querySelector('select[name="permission"]').value
         console.log(JSON.stringify(user))
         createUserAjax(user)
         addUserToTable(user)
@@ -132,7 +134,7 @@
         user.id = rowElement.cells[0].firstChild.textContent
         user.user= rowElement.cells[1].firstChild.textContent
         user.email = rowElement.cells[2].firstChild.textContent
-        user.edits = parseInt(rowElement.cells[3].firstChild.textContent,10)
+        user.edits = parseInt(rowElement.cells[3].firstChild.textContent)
         user.permission = rowElement.cells[4].firstChild.textContent
         return user
     }
@@ -183,7 +185,6 @@
         });
     }
     function createUserAjax(user){
-        //var user = {"reg":"12 D 1234","make":"Advanced Editor","model":"Punto","Edits":3000}
         console.log(JSON.stringify(user));
         $.ajax({
             "url": "http://127.0.0.1:5000/users",
