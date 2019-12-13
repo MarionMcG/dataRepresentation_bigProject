@@ -15,6 +15,6 @@ Note: pip install -r requirements.txt to reinstall packages. set FLASK_APP = app
 Right now, 
 
 * The table displays all items in the db, but there's an error. Number of edits does not display, and permission is placed in that cell instead
-* Create button works.
+* Create button works, but doesn't return to view all. Now it returns, but mandatory field (edits:0, permission:Editor) are undefined.
 * Delete button works.
 * UPdate button does not work. 

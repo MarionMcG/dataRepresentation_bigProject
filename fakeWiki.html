@@ -24,15 +24,20 @@
                 
             </table>
         </div>
-        <div id='createUpdateForm' style="display: none">
-                <h2><span id="createLabel">Create a</span> <span id="updateLabel">update</span> user</h2>
-                
-                <!--Id<input type="text" name=""/> <br/>-->
-                
+          <div id='createForm' style="display: none">
+                <h2><span id="createLabel">Create a</span> User</h2>
                 User <input type="text" name="user"/> <br/>
                 Email <input type="text" name="email"/> <br/>
-                Edits <input type="number" name="edits"/> <br/>
-                Permission<select name="permission">
+                </select> <br/>
+                <span><button id="doCreateButton" onclick="doCreate()">Create</button></span>
+        </div>
+        <div id='UpdateForm' style="display: none">
+                <h2><span id="createLabel">Create a</span> <span id="updateLabel">update</span> user</h2>            
+                Id<input type="text" id="updateLabel" name=""/> <br/>
+                User <input type="text" name="user"/> <br/>
+                Email <input type="text" name="email"/> <br/>
+                Edits <input type="number" id="updateLabel" name="edits"/> <br/>
+                Permission<select id="updateLabel" name="permission">
                         <option value="Editor">Editor</option>
                         <option value="Advanced Editor">Advanced Editor</option>
                         <option value="Gardener">Gardener</option>
@@ -45,7 +50,8 @@
     function showCreate(){
         document.getElementById('showCreateButton').style.display="none"
         document.getElementById('userTable').style.display="none"
-        document.getElementById('createUpdateForm').style.display="block"
+        document.getElementById('createForm').style.display="block"
+        document.getElementById('UpdateForm').style.display="none"
         document.getElementById('createLabel').style.display="inline"
         document.getElementById('updateLabel').style.display="none"
         document.getElementById('doCreateButton').style.display="block"
@@ -54,12 +60,14 @@
     function showViewAll(){
         document.getElementById('showCreateButton').style.display="block"
         document.getElementById('userTable').style.display="block"
-        document.getElementById('createUpdateForm').style.display="none"
+        document.getElementById('UpdateForm').style.display="none"
+        document.getElementById('createForm').style.display="none"
     }
     function showUpdate(buttonElement){
         document.getElementById('showCreateButton').style.display="none"
         document.getElementById('userTable').style.display="none"
-        document.getElementById('createUpdateForm').style.display="block"
+        document.getElementById('UpdateForm').style.display="block"
+        document.getElementById('createForm').style.display="none"
         document.getElementById('createLabel').style.display="none"
         document.getElementById('updateLabel').style.display="inline"
         document.getElementById('doCreateButton').style.display="none"
@@ -71,19 +79,17 @@
         populateFormwithUsers(user)
     }
     function doCreate(){
-        var form = document.getElementById('createUpdateForm')
+        var form = document.getElementById('createForm')
         var user = {}
         //user.id= form.querySelector('input[name="id"]').value
+        //user.permission= form.querySelector('select[name="permission"]').value
         user.user = form.querySelector('input[name="user"]').value
         user.email = form.querySelector('input[name="email"]').value
-        user.edits = form.querySelector('input[name="edits"]').value
-        user.permission= form.querySelector('select[name="permission"]').value
+        //user.edits = form.querySelector('input[name="edits"]').value
         console.log(JSON.stringify(user))
-        createUserAjax(user)
-        addUserToTable(user)
-        clearForm()
-        
-        showViewAll()
+        createUserAjax(user);
+        clearCreateForm();
+        showViewAll();
     }
     function doUpdate(){
         var user = getUserFromForm();
@@ -91,7 +97,7 @@
         updateUserAjax(user);
         setUserInRow(rowElement,user);
        
-        clearForm();
+        clearUpdateForm();
         showViewAll();
     }
     function doDelete(r){
@@ -120,21 +126,26 @@
         var cell6 = rowElement.insertCell(6);
         cell6.innerHTML = '<button onclick=doDelete(this)>delete</button>'
     }
-    function clearForm(){
-        var form = document.getElementById('createUpdateForm')
-        //form.querySelector('input[name="id"]').disabled = false
-        //form.querySelector('input[name="id"]').value  =''
-        form.querySelector('select[name="user"]').value=''
+    function clearCreateForm(){
+        var form = document.getElementById('createForm')
+        form.querySelector('input[name="user"]').value=''
+        form.querySelector('input[name="email"]').value=''
+    }
+    function clearUpdateForm(){
+        var form = document.getElementById('UpdateForm')
+        form.querySelector('input[name="id"]').disabled = false
+        form.querySelector('input[name="id"]').value  =''
+        form.querySelector('input[name="user"]').value=''
         form.querySelector('input[name="email"]').value=''
         form.querySelector('input[name="edits"]').value=''
-        form.querySelector('input[name="permission"]').value=''
+        form.querySelector('select[name="permission"]').value=''
     }
     function getUserFromRow(rowElement){
         var user ={}
         user.id = rowElement.cells[0].firstChild.textContent
         user.user= rowElement.cells[1].firstChild.textContent
         user.email = rowElement.cells[2].firstChild.textContent
-        user.edits = parseInt(rowElement.cells[3].firstChild.textContent)
+        user.edits = parseInt(rowElement.cells[3].firstChild.textContent,10)
         user.permission = rowElement.cells[4].firstChild.textContent
         return user
     }
@@ -146,20 +157,20 @@
         rowElement.cells[4].firstChild.textContent= user.edits
     }
     function populateFormwithUsers(user){
-        var form = document.getElementById('createUpdateForm')
+        var form = document.getElementById('UpdateForm')
         //form.querySelector('input[name="id"]').disabled = true
         //form.querySelector('input[name="id"]').value  = user.id
-        form.querySelector('select[name="user"]').value= user.user
+        form.querySelector('input[name="user"]').value= user.user
         form.querySelector('select[name="permission"]').value= user.permission
         form.querySelector('input[name="email"]').value= user.email
         form.querySelector('input[name="edits"]').value= user.edits
         return user
     }
     function getUserFromForm(){
-        var form = document.getElementById('createUpdateForm')
+        var form = document.getElementById('UpdateForm')
         var user = {}
         //user.id= form.querySelector('input[name="id"]').value
-        user.user= form.querySelector('select[name="user"]').value
+        user.user= form.querySelector('input[name="user"]').value
         user.permission= form.querySelector('select[name="permission"]').value
         user.email = form.querySelector('input[name="email"]').value
         user.edits = parseInt(form.querySelector('input[name="edits"]').value,10)
@@ -194,7 +205,10 @@
             contentType: "application/json; charset=utf-8",
             "success":function(result){
                 //console.log(result);
-                 
+                user.id = result.id
+                addUserToTable(user) 
+                clearCreateForm()
+                showViewAll()
             },
             "error":function(xhr,status,error){
                 console.log("error: "+status+" msg:"+error);

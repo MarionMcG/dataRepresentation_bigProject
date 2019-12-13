@@ -31,22 +31,25 @@ def findById(id):
 @app.route('/users', methods = ['POST'])
 def create():
     #global newID
+    if not request.json:
+        abort(400)
     try:
         new_user = request.get_json(force=True)
     except:
         abort(400)
-    if not 'user' in new_user:
-        abort(400)
-    if not 'email' in new_user:
-        abort(400)
+    #if not 'user' in new_user:
+        #abort(400)
+    #if not 'email' in new_user:
+        #abort(400)
     user = {
-        "email": new_user['email'],
         "user": new_user['user'],
+        "email": new_user['email']
+        
         # going to add new users to user_info and user_login at same time
         #"password": new_user['password']
     }
-    values = (user['email'], user['user'])
-    newId = UserDAO.create(values)
+    new_user = (user['user'], user['email'],)
+    newId = UserDAO.create(new_user)
     user['id'] = newId
     return jsonify(user)
 #curl -i -H "Content-Type:application.json" -X POST -d "{\"email\":\"skippy@hotmail.com\",\"permission\":\"Advanced Editor\",\"user\":\"skippy\"}" http://127.0.0.1:5000/users
