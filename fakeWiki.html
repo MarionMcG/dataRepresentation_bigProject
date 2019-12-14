@@ -37,7 +37,7 @@
                 <!--Id<input type="text" id="updateLabel" name="id"/>--> <br/>
                 User <input type="text" name="user"/> <br/>
                 Email <input type="text" name="email"/> <br/>
-                Edit <input type="number" min ="0" name="edit"/> <br/>
+                Edit <input type="text" id = "editID" name="edit"/> <br/>
                 Permission<select name="permission">
                         <option value="Editor">Editor</option>
                         <option value="Advanced Editor">Advanced Editor</option>
@@ -118,7 +118,8 @@
         var cell3 = rowElement.insertCell(2);
         cell3.innerHTML = user.email
         var cell4 = rowElement.insertCell(3);
-        cell4.innerHTML =user.edit
+        cell4.innerHTML=user.edit
+        //cell4.innerHTML =parseInt(document.getElementById('editID').value, 10)
         var cell5 = rowElement.insertCell(4);
         cell5.innerHTML = user.permission
         var cell6 = rowElement.insertCell(5);
@@ -145,7 +146,7 @@
         user.id = rowElement.getAttribute("id", rowElement)
         user.user= rowElement.cells[1].firstChild.textContent
         user.email = rowElement.cells[2].firstChild.textContent
-        user.edit = rowElement.cells[3].firstChild.textContent
+        user.edit = parseInt(rowElement.cells[3].firstChild.textContent, 10)
         user.permission = rowElement.cells[4].firstChild.textContent
         return user
     }
