@@ -13,7 +13,6 @@ Note: pip install -r requirements.txt to reinstall packages. set FLASK_APP = app
 ## Web Application
 
 Currently working on:
-
 * The table displays all items in the db, but there's an error. Number of edits does not display. Attempts to use parseInt(), Number() and other methods have resulted in either Nan or Undefined
 * Create button works, but doesn't return to view all. Fixed. Now it returns, but mandatory field (edits:0, permission:Editor) are undefined. Need to refresh to load new users to the table correctly.
 * Delete button works.
